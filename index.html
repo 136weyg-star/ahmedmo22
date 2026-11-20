@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ahmed Coffee — Smart Coffee Machine & Ordering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-cream: #faf5ef;
+      --bg-warm: #f3eadf;
+      --card-bg: #ffffff;
+      --espresso: #23140d;
+      --roast: #432618;
+      --caramel: #b86b35;
+      --caramel-dark: #945122;
+      --latte: #e7d5c1;
+      --ink: #1e140e;
+      --muted: #6e5b4f;
+      --border: #eadbc9;
+      --success: #1f7a4c;
+      --danger: #b83227;
+      --shadow-sm: 0 4px 14px rgba(35, 20, 13, 0.06);
+      --shadow-md: 0 12px 30px rgba(35, 20, 13, 0.10);
+      --shadow-lg: 0 20px 45px rgba(35, 20, 13, 0.16);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-cream);
+      color: var(--ink);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(35, 20, 13, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .nav-container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0.95rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--caramel), #e09963);
+      display: grid;
+      place-items: center;
+      font-size: 1.25rem;
+      box-shadow: 0 4px 12px rgba(184, 107, 53, 0.35);
+    }
+
+    .brand-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: 0.2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #f3e6d8;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: #f0a871;
+    }
+
+    .nav-badge {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 0.42rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: #f7e8d8;
+      white-space: nowrap;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #fff;
+      border-radius: 10px;
+      padding: 0.45rem 0.75rem;
+      font-size: 1.15rem;
+      cursor: pointer;
+    }
+
+    /* Hero */
+    .hero {
+      background:
+        radial-gradient(circle at 85% 20%, rgba(184, 107, 53, 0.28), transparent 48%),
+        linear-gradient(135deg, #1d100a 0%, #3a2013 55%, #56301b 100%);
+      color: #fff;
+      padding: 3.5rem 1.5rem;
+    }
+
+    .hero-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.35fr 0.85fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(224, 153, 99, 0.18);
+      border: 1px solid rgba(224, 153, 99, 0.35);
+      color: #f6be92;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.15;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero p {
+      color: #ebd9c8;
+      font-size: 1rem;
+      max-width: 560px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--caramel), #d48346);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 0.8rem 1.45rem;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 8px 20px rgba(184, 107, 53, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(184, 107, 53, 0.45);
+    }
+
+    .hero-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-card h3 {
+      font-size: 1rem;
+      color: #f6be92;
+      margin-bottom: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .hero-steps-list {
+      list-style: none;
+      display: grid;
+      gap: 0.7rem;
+      font-size: 0.92rem;
+      color: #f5ebe1;
+    }
+
+    .hero-steps-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .step-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(224, 153, 99, 0.25);
+      border: 1px solid rgba(224, 153, 99, 0.5);
+      display: grid;
+      place-items: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Main Layout */
+    .main-container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 3.5rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    .section-header {
+      margin-bottom: 1.6rem;
+    }
+
+    .section-header h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.8rem;
+      color: var(--espresso);
+      margin-bottom: 0.25rem;
+    }
+
+    .section-header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* Drink Grid */
+    .drinks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+      gap: 1.35rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .drink-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .drink-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: #d7b796;
+    }
+
+    .drink-card.selected {
+      border-color: var(--caramel);
+      box-shadow: 0 12px 28px rgba(184, 107, 53, 0.2);
+      background: #fffdfb;
+    }
+
+    .drink-img-wrap {
+      position: relative;
+      height: 165px;
+      width: 100%;
+      overflow: hidden;
+      background: var(--bg-warm);
+    }
+
+    .drink-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+
+    .drink-card:hover .drink-img-wrap img {
+      transform: scale(1.06);
+    }
+
+    .drink-price-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(35, 20, 13, 0.88);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+
+    .drink-body {
+      padding: 1.05rem 1.15rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      flex: 1;
+    }
+
+    .drink-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .drink-name {
+      font-weight: 700;
+      font-size: 1.08rem;
+      color: var(--espresso);
+    }
+
+    .selected-pill {
+      display: none;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: #fff0e3;
+      color: var(--caramel-dark);
+      border: 1px solid #f0c9a8;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+    }
+
+    .drink-card.selected .selected-pill {
+      display: inline-block;
+    }
+
+    .drink-desc {
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    /* Order & Brew Workspace */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 1.6rem;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.6rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .panel-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.35rem;
+      color: var(--espresso);
+      margin-bottom: 1.15rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary-box {
+      background: var(--bg-cream);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.15rem;
+      margin-bottom: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .summary-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .summary-drink {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--espresso);
+    }
+
+    .summary-price {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--caramel-dark);
+      white-space: nowrap;
+    }
+
+    .field-group {
+      margin-bottom: 1.3rem;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--espresso);
+      margin-bottom: 0.55rem;
+    }
+
+    .sugar-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.65rem;
+    }
+
+    .sugar-btn {
+      background: var(--bg-cream);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.5rem;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--ink);
+      transition: all 0.18s ease;
+    }
+
+    .sugar-btn:hover {
+      border-color: var(--caramel);
+    }
+
+    .sugar-btn.active {
+      background: var(--espresso);
+      color: #fff;
+      border-color: var(--espresso);
+    }
+
+    .payment-row {
+      display: flex;
+      gap: 0.65rem;
+      align-items: center;
+      margin-bottom: 0.65rem;
+    }
+
+    .payment-input {
+      flex: 1;
+      padding: 0.75rem 0.95rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .payment-input:focus {
+      outline: none;
+      border-color: var(--caramel);
+    }
+
+    .quick-cash-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .quick-cash-btn {
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      color: var(--roast);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.35rem 0.7rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .quick-cash-btn:hover {
+      background: var(--latte);
+    }
+
+    .feedback-msg {
+      min-height: 1.35rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 0.9rem;
+    }
+
+    .feedback-msg.error {
+      color: var(--danger);
+    }
+
+    .feedback-msg.success {
+      color: var(--success);
+    }
+
+    .brew-btn {
+      width: 100%;
+      padding: 0.9rem 1.25rem;
+      background: linear-gradient(135deg, var(--caramel), var(--caramel-dark));
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(148, 81, 34, 0.28);
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .brew-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .brew-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    /* Brewing Steps */
+    .steps-list {
+      list-style: none;
+      display: grid;
+      gap: 0.7rem;
+      margin-bottom: 1.35rem;
+    }
+
+    .brew-step {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0.95rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-cream);
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+      transition: all 0.25s ease;
+    }
+
+    .brew-step.active {
+      background: #fff4e8;
+      border-color: var(--caramel);
+      color: var(--espresso);
+    }
+
+    .brew-step.done {
+      background: #edf9f2;
+      border-color: #9fd6b7;
+      color: var(--success);
+    }
+
+    .step-status {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* Customer Receipt */
+    .receipt-box {
+      border: 1.5px dashed #c7ad91;
+      background: #fffdf9;
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: none;
+    }
+
+    .receipt-box.visible {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .receipt-header {
+      text-align: center;
+      border-bottom: 1px dashed #d5bea5;
+      padding-bottom: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .receipt-brand {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--espresso);
+    }
+
+    .receipt-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      padding: 0.32rem 0;
+      color: var(--ink);
+    }
+
+    .receipt-row.total {
+      border-top: 1px dashed #d5bea5;
+      margin-top: 0.45rem;
+      padding-top: 0.65rem;
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--espresso);
+    }
+
+    .receipt-footer {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 0.85rem;
+      padding-top: 0.65rem;
+      border-top: 1px dashed #d5bea5;
+    }
+
+    .receipt-actions {
+      margin-top: 0.9rem;
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .print-btn {
+      flex: 1;
+      padding: 0.65rem 1rem;
+      background: var(--espresso);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .print-btn:hover {
+      background: var(--roast);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--espresso);
+      color: #decbb8;
+      text-align: center;
+      padding: 1.35rem 1.5rem;
+      font-size: 0.88rem;
+      margin-top: auto;
+    }
+
+    /* Print Styles */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .receipt-box, .receipt-box * {
+        visibility: visible;
+      }
+      .receipt-box {
+        position: fixed;
+        left: 50%;
+        top: 20px;
+        transform: translateX(-50%);
+        width: 340px;
+        box-shadow: none;
+        border: 1px solid #000;
+      }
+      .receipt-actions {
+        display: none;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-inner,
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--espresso);
+        flex-direction: column;
+        padding: 1rem 1.5rem;
+        gap: 0.9rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: inline-block;
+      }
+
+      .nav-badge {
+        display: none;
+      }
+
+      .sugar-options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <span class="brand-icon">☕</span>
+        <span class="brand-name">Ahmed Coffee</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#order-station">Order &amp; Brew</a></li>
+        <li><a href="#receipt-panel">Receipt</a></li>
+      </ul>
+
+      <span class="nav-badge">Freshly Brewed • Instant Receipt</span>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="hero-tag">✨ Smart Coffee Machine</span>
+        <h1>Craft Your Perfect Cup at Ahmed Coffee</h1>
+        <p>
+          Choose from classic espresso, rich Turkish coffee, creamy cappuccino, latte, hot mocha,
+          hot chocolate, or warm milk. Customize your sweetness, pay effortlessly, and get an instant receipt.
+        </p>
+        <a href="#menu" class="hero-cta">Explore Drinks ↓</a>
+      </div>
+
+      <div class="hero-card">
+        <h3>How Ordering Works</h3>
+        <ul class="hero-steps-list">
+          <li><span class="step-dot">1</span> Pick your drink from the 7-item menu</li>
+          <li><span class="step-dot">2</span> Select No Sugar, Normal, or Extra Sweet</li>
+          <li><span class="step-dot">3</span> Enter payment &amp; watch live brewing steps</li>
+          <li><span class="step-dot">4</span> Collect your drink &amp; printable receipt</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    <!-- Menu Section -->
+    <section id="menu">
+      <div class="section-header">
+        <h2>Our Coffee &amp; Warm Drinks Menu</h2>
+        <p>Click any drink card below to select it and start customizing your order.</p>
+      </div>
+
+      <div class="drinks-grid" id="drinksGrid"></div>
+    </section>
+
+    <!-- Order & Brewing Workspace -->
+    <section class="workspace-grid" id="order-station">
+      <!-- Left: Customization & Payment -->
+      <div class="panel">
+        <h2 class="panel-title">Customize &amp; Pay</h2>
+
+        <div class="summary-box">
+          <div>
+            <div class="summary-label">Selected Drink</div>
+            <div class="summary-drink" id="selectedDrinkName">Cappuccino</div>
+          </div>
+          <div class="summary-price" id="selectedDrinkPrice">45.00 EGP</div>
+        </div>
+
+        <div class="field-group">
+          <span class="field-label">Sugar Level</span>
+          <div class="sugar-options" id="sugarOptions">
+            <button type="button" class="sugar-btn" data-sugar="No Sugar">No Sugar</button>
+            <button type="button" class="sugar-btn active" data-sugar="Normal Sugar">Normal Sugar</button>
+            <button type="button" class="sugar-btn" data-sugar="Extra Sugar">Extra Sugar</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="paymentInput" class="field-label">Payment Amount (EGP)</label>
+          <div class="payment-row">
+            <input
+              type="number"
+              id="paymentInput"
+              class="payment-input"
+              min="0"
+              step="1"
+              placeholder="Enter amount in EGP"
+            />
+          </div>
+          <div class="quick-cash-row" id="quickCashRow">
+            <button type="button" class="quick-cash-btn" data-add="exact">Exact Price</button>
+            <button type="button" class="quick-cash-btn" data-add="50">50 EGP</button>
+            <button type="button" class="quick-cash-btn" data-add="100">100 EGP</button>
+            <button type="button" class="quick-cash-btn" data-add="200">200 EGP</button>
+          </div>
+        </div>
+
+        <div class="feedback-msg" id="feedbackMsg" role="status" aria-live="polite"></div>
+
+        <button type="button" class="brew-btn" id="brewBtn">Pay &amp; Brew Drink</button>
+      </div>
+
+      <!-- Right: Live Brewing Progress & Customer Receipt -->
+      <div class="panel" id="receipt-panel">
+        <h2 class="panel-title">Brewing Status &amp; Receipt</h2>
+
+        <ul class="steps-list" id="brewStepsList">
+          <li class="brew-step" data-step="0">
+            <span>1. Heating water &amp; milk</span>
+            <span class="step-status">Waiting</span>
+          </li>
+          <li class="brew-step" data-step="1">
+            <span>2. Adding selected sugar</span>
+            <span class="step-status">Waiting</span>
+          </li>
+          <li class="brew-step" data-step="2">
+            <span>3. Extracting &amp; blending drink</span>
+            <span class="step-status">Waiting</span>
+          </li>
+          <li class="brew-step" data-step="3">
+            <span>4. Pouring into cup</span>
+            <span class="step-status">Waiting</span>
+          </li>
+        </ul>
+
+        <div class="receipt-box" id="receiptBox">
+          <div class="receipt-header">
+            <div class="receipt-brand">AHMED COFFEE</div>
+            <div class="receipt-meta" id="receiptMeta">Order #101 • Today</div>
+          </div>
+
+          <div class="receipt-row">
+            <span>Drink</span>
+            <strong id="rcptDrink">Cappuccino</strong>
+          </div>
+          <div class="receipt-row">
+            <span>Sugar Level</span>
+            <span id="rcptSugar">Normal Sugar</span>
+          </div>
+          <div class="receipt-row">
+            <span>Drink Price</span>
+            <span id="rcptPrice">45.00 EGP</span>
+          </div>
+          <div class="receipt-row">
+            <span>Amount Paid</span>
+            <span id="rcptPaid">50.00 EGP</span>
+          </div>
+          <div class="receipt-row total">
+            <span>Change Returned</span>
+            <span id="rcptChange">5.00 EGP</span>
+          </div>
+
+          <div class="receipt-footer">
+            Thank you for visiting Ahmed Coffee! Enjoy your drink.
+          </div>
+
+          <div class="receipt-actions">
+            <button type="button" class="print-btn" id="printReceiptBtn">🖨️ Print Receipt</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Ahmed Coffee — Smart Coffee Ordering Experience
+  </footer>
+
+  <script>
+    const DRINKS = [
+      {
+        id: "cappuccino",
+        name: "Cappuccino",
+        price: 45,
+        desc: "Rich espresso topped with steamed milk and thick velvety foam.",
+        image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=800&q=80",
+        fallback: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: "espresso",
+        name: "Espresso",
+        price: 35,
+        desc: "Bold, concentrated shot of freshly ground dark roast coffee.",
+        image: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=800&q=80",
+        fallback: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: "turkish-coffee",
+        name: "Turkish Coffee",
+        price: 30,
+        desc: "Traditional finely ground coffee cup brewed smooth and aromatic.",
+        image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=800&q=80",
+        fallback: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: "hot-milk",
+        name: "Hot Milk",
+        price: 25,
+        desc: "Warm, comforting steamed milk with optional sweetness.",
+        image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=800&q=80",
+        fallback: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: "hot-chocolate",
+        name: "Hot Chocolate",
+        price: 42,
+        desc: "Smooth melted cocoa blended with warm milk for a rich treat.",
+        image: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?auto=format&fit=crop&w=800&q=80",
+        fallback: "https://images.unsplash.com/photo-1517578239113-b03992dcdd25?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: "mocha",
+        name: "Mocha",
+        price: 48,
+        desc: "Hot espresso and chocolate blended with steamed milk and foam.",
+        image: "https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=800&q=80",
+        fallback: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: "latte",
+        name: "Latte",
+        price: 40,
+        desc: "Silky steamed milk poured over smooth espresso with a light layer of foam.",
+        image: "https://images.unsplash.com/photo-1561882468-9110e03e0f78?auto=format&fit=crop&w=800&q=80",
+        fallback: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=800&q=80"
+      }
+    ];
+
+    let selectedDrink = DRINKS[0];
+    let selectedSugar = "Normal Sugar";
+    let isBrewing = false;
+    let orderCounter = 101;
+
+    const drinksGrid = document.getElementById("drinksGrid");
+    const selectedDrinkName = document.getElementById("selectedDrinkName");
+    const selectedDrinkPrice = document.getElementById("selectedDrinkPrice");
+    const sugarOptions = document.getElementById("sugarOptions");
+    const paymentInput = document.getElementById("paymentInput");
+    const quickCashRow = document.getElementById("quickCashRow");
+    const feedbackMsg = document.getElementById("feedbackMsg");
+    const brewBtn = document.getElementById("brewBtn");
+    const brewSteps = Array.from(document.querySelectorAll(".brew-step"));
+    const receiptBox = document.getElementById("receiptBox");
+    const printReceiptBtn = document.getElementById("printReceiptBtn");
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    function formatEGP(amount) {
+      return `${Number(amount).toFixed(2)} EGP`;
+    }
+
+    function setFeedback(message, type = "") {
+      feedbackMsg.textContent = message;
+      feedbackMsg.className = `feedback-msg ${type}`.trim();
+    }
+
+    function renderMenu() {
+      drinksGrid.innerHTML = "";
+      DRINKS.forEach((drink) => {
+        const card = document.createElement("article");
+        card.className = `drink-card ${drink.id === selectedDrink.id ? "selected" : ""}`;
+        card.setAttribute("tabindex", "0");
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-label", `Select ${drink.name} for ${drink.price} EGP`);
+
+        card.innerHTML = `
+          <div class="drink-img-wrap">
+            <img src="${drink.image}" alt="${drink.name}" loading="lazy" />
+            <span class="drink-price-badge">${drink.price} EGP</span>
+          </div>
+          <div class="drink-body">
+            <div class="drink-title-row">
+              <h3 class="drink-name">${drink.name}</h3>
+              <span class="selected-pill">Selected</span>
+            </div>
+            <p class="drink-desc">${drink.desc}</p>
+          </div>
+        `;
+
+        const imgEl = card.querySelector("img");
+        imgEl.addEventListener("error", () => {
+          if (imgEl.src !== drink.fallback) {
+            imgEl.src = drink.fallback;
+          }
+        });
+
+        const selectHandler = () => {
+          if (isBrewing) return;
+          selectedDrink = drink;
+          updateSelectedSummary();
+          renderMenu();
+          setFeedback("");
+        };
+
+        card.addEventListener("click", selectHandler);
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            selectHandler();
+          }
+        });
+
+        drinksGrid.appendChild(card);
+      });
+    }
+
+    function updateSelectedSummary() {
+      selectedDrinkName.textContent = selectedDrink.name;
+      selectedDrinkPrice.textContent = formatEGP(selectedDrink.price);
+    }
+
+    function resetBrewSteps() {
+      brewSteps.forEach((stepEl) => {
+        stepEl.className = "brew-step";
+        stepEl.querySelector(".step-status").textContent = "Waiting";
+      });
+    }
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    function showReceipt(drink, sugar, paid, change) {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      const dateStr = now.toLocaleDateString([], { month: "short", day: "numeric", year: "numeric" });
+
+      document.getElementById("receiptMeta").textContent = `Order #${orderCounter} • ${dateStr} • ${timeStr}`;
+      document.getElementById("rcptDrink").textContent = drink.name;
+      document.getElementById("rcptSugar").textContent = sugar;
+      document.getElementById("rcptPrice").textContent = formatEGP(drink.price);
+      document.getElementById("rcptPaid").textContent = formatEGP(paid);
+      document.getElementById("rcptChange").textContent = formatEGP(change);
+
+      receiptBox.classList.add("visible");
+      orderCounter += 1;
+    }
+
+    sugarOptions.addEventListener("click", (e) => {
+      if (isBrewing) return;
+      const btn = e.target.closest(".sugar-btn");
+      if (!btn) return;
+      sugarOptions.querySelectorAll(".sugar-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      selectedSugar = btn.dataset.sugar;
+    });
+
+    quickCashRow.addEventListener("click", (e) => {
+      if (isBrewing) return;
+      const btn = e.target.closest(".quick-cash-btn");
+      if (!btn) return;
+      const val = btn.dataset.add;
+      paymentInput.value = val === "exact" ? selectedDrink.price : Number(val);
+      setFeedback("");
+    });
+
+    brewBtn.addEventListener("click", async () => {
+      if (isBrewing) return;
+
+      const paid = parseFloat(paymentInput.value);
+      if (Number.isNaN(paid) || paid <= 0) {
+        setFeedback("Please enter a valid payment amount in EGP.", "error");
+        paymentInput.focus();
+        return;
+      }
+
+      if (paid < selectedDrink.price) {
+        const shortage = (selectedDrink.price - paid).toFixed(2);
+        setFeedback(`Insufficient payment. You still need ${shortage} EGP.`, "error");
+        return;
+      }
+
+      const change = Number((paid - selectedDrink.price).toFixed(2));
+      isBrewing = true;
+      brewBtn.disabled = true;
+      receiptBox.classList.remove("visible");
+      resetBrewSteps();
+      setFeedback(`Payment accepted! Brewing ${selectedDrink.name} (${selectedSugar})...`, "success");
+
+      for (let i = 0; i < brewSteps.length; i += 1) {
+        const stepEl = brewSteps[i];
+        const statusEl = stepEl.querySelector(".step-status");
+        stepEl.className = "brew-step active";
+        statusEl.textContent = "In Progress";
+        await sleep(650);
+        stepEl.className = "brew-step done";
+        statusEl.textContent = "Done";
+      }
+
+      showReceipt(selectedDrink, selectedSugar, paid, change);
+      setFeedback(
+        change > 0
+          ? `Enjoy your ${selectedDrink.name}! Change returned: ${formatEGP(change)}.`
+          : `Enjoy your ${selectedDrink.name}! Exact payment received.`,
+        "success"
+      );
+
+      paymentInput.value = "";
+      isBrewing = false;
+      brewBtn.disabled = false;
+    });
+
+    printReceiptBtn.addEventListener("click", () => {
+      window.print();
+    });
+
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+    });
+
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => navLinks.classList.remove("open"));
+    });
+
+    renderMenu();
+    updateSelectedSummary();
+  </script>
+</body>
+</html>
